@@ -3,11 +3,7 @@ const logFileLocation = process.argv[2] || './connection-log.txt';
 
 const checkConnection = () => {
   require('dns').resolve('www.google.com', err => {
-    if (err) {
-      checkIfDisconnected();
-    } else {
-      checkForReconnection();
-    }
+    err ? checkIfDisconnected() : checkIfReconnected();
   });
 }
 
@@ -29,7 +25,7 @@ const checkIfDisconnected = () => {
   if (!lastLine.startsWith('Disconnected')) writeToLog('Disconnected');
 }
 
-const checkForReconnection = () => {
+const checkIfReconnected = () => {
   const lastLine = getLastLogLine();
   if (lastLine.startsWith('Disconnected')) writeToLog('Reconnected');
 }
